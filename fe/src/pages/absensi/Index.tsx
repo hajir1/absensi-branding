@@ -213,7 +213,7 @@ export default function Absensis() {
                             className="modal modal-bottom sm:modal-middle"
                           >
                             <div className="modal-action">
-                              <div className="modal-box dark:bg-black border-white border">
+                              <div className="modal-box bg-white dark:bg-black border-white border">
                                 <div className="flex justify-between">
                                   <div>
                                     <h3 className="font-normal text-base">
@@ -244,7 +244,7 @@ export default function Absensis() {
                             className="modal modal-bottom sm:modal-middle"
                           >
                             <div className="modal-action">
-                              <div className="modal-box dark:bg-black border-white border">
+                              <div className="modal-box bg-white dark:bg-black border-white border">
                                 <div className="flex justify-between">
                                   <div>
                                     <h3 className="font-normal text-base">
@@ -355,7 +355,7 @@ export default function Absensis() {
                 {" "}
                 <div className="flex justify-end mt-10">
                   {" "}
-                  <span className="text-sm font-medium dark:placeholder:text-white/50 dark:text-white/50">
+                  <span className="text-sm font-medium text-black dark:placeholder:text-white/50 dark:text-white/50">
                     Halaman {page + 1} dari {(Absensis as any)?.totalPages}
                   </span>
                 </div>
@@ -365,7 +365,7 @@ export default function Absensis() {
                     <button
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
                       disabled={page === 0}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded dark:bg-black bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
                     >
                       Prev
                     </button>
@@ -379,7 +379,7 @@ export default function Absensis() {
               ${
                 page === i
                   ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
                         >
                           {i + 1}
@@ -397,7 +397,7 @@ export default function Absensis() {
                         )
                       }
                       disabled={page + 1 >= (Absensis as any)?.totalPages}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded dark:bg-black bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
                     >
                       Next
                     </button>
@@ -411,7 +411,7 @@ export default function Absensis() {
 
       <dialog ref={imgRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-end">
               <form method="dialog">
                 <button

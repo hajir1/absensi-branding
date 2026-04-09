@@ -123,7 +123,7 @@ export default function Hari() {
                           className="modal modal-bottom sm:modal-middle"
                         >
                           <div className="modal-action">
-                            <div className="modal-box dark:bg-black border-white border">
+                            <div className="modal-box bg-white dark:bg-black border-white border">
                               <div className="flex justify-between">
                                 <div>
                                   <h3 className="font-normal text-base">
@@ -233,7 +233,7 @@ export default function Hari() {
 
       <dialog ref={createRef} className="modal modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>

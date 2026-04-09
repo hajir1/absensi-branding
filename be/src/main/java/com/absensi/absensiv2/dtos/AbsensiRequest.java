@@ -1,5 +1,7 @@
 package com.absensi.absensiv2.dtos;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalTime;
@@ -9,6 +11,7 @@ import java.time.LocalTime;
 public class AbsensiRequest {
     private Integer userId;
     private Integer shiftId;
+    @Size(max = 30)
     private String keterangan;
     private String status;
     private String jenis;

@@ -143,7 +143,7 @@ export default function Divisi() {
 
       <dialog ref={updateRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>
@@ -207,7 +207,7 @@ export default function Divisi() {
 
       <dialog ref={createRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>

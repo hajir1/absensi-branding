@@ -88,7 +88,6 @@ export default function AbsensiByMentor() {
 
       <div className="space-y-6">
         <ComponentCard title="Absensi">
-
           <input
             type="text"
             placeholder="Cari nama user..."
@@ -154,7 +153,16 @@ export default function AbsensiByMentor() {
                           {Absensi.keterangan.slice(0, 40)}
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                          {Absensi.status}
+                          <Badge
+                            variant="light"
+                            color={
+                              Absensi.status !== "TERLAMBAT"
+                                ? "success"
+                                : "warning"
+                            }
+                          >
+                            {Absensi.status}
+                          </Badge>
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                           <Badge
@@ -367,7 +375,7 @@ export default function AbsensiByMentor() {
               <>
                 <div className="flex justify-end mt-10">
                   {" "}
-                  <span className="text-sm font-medium dark:placeholder:text-white/50 dark:text-white/50">
+                  <span className="text-sm font-medium text-black dark:placeholder:text-white/50 dark:text-white/50">
                     Halaman {page + 1} dari {(Absensis as any)?.totalPages}
                   </span>
                 </div>
@@ -377,7 +385,7 @@ export default function AbsensiByMentor() {
                     <button
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
                       disabled={page === 0}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Prev
                     </button>
@@ -391,7 +399,7 @@ export default function AbsensiByMentor() {
               ${
                 page === i
                   ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
                         >
                           {i + 1}
@@ -409,7 +417,7 @@ export default function AbsensiByMentor() {
                         )
                       }
                       disabled={page + 1 >= (Absensis as any)?.totalPages}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Next
                     </button>

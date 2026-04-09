@@ -64,6 +64,9 @@ export default function Shifts() {
       name: "Akhir Shift",
     },
     {
+      name: "Toleransi Menit",
+    },
+    {
       name: "Opsi",
     },
   ];
@@ -101,13 +104,17 @@ export default function Shifts() {
     if (file) {
       form.append("foto", file);
     }
+    if (dataAbsensi.keterangan.length < 10) {
+      setErrorShift("Keterangan minimal 10 karakter");
+      return;
+    }
     updateRef.current?.close();
     sweetAlertConfirm(
       "Peringatan",
       "Absensi hanya dibuat sekali untuk setiap shift, pastikan data benar benar valid?",
       async () => {
         try {
-          await createAbsensi.mutateAsync(form)
+          await createAbsensi.mutateAsync(form);
           updateRef.current?.close();
           setErrorShift("");
           setDataAbsensi({
@@ -185,6 +192,9 @@ export default function Shifts() {
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                         {Shift.akhir}
                       </TableCell>
+                      <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                        {Shift.toleransiMenit} menit
+                      </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400 space-x-4">
                         {canAbsen(Shift) ? (
                           <Button
@@ -218,7 +228,7 @@ export default function Shifts() {
                           className="modal modal-bottom sm:modal-middle"
                         >
                           <div className="modal-action">
-                            <div className="modal-box max-w-4xl w-72 md:w-96 dark:bg-black border-white border">
+                            <div className="modal-box max-w-4xl w-72 md:w-96 bg-white dark:bg-black border-white border p-2">
                               <div className="flex justify-between">
                                 <div>
                                   <h3 className="font-normal text-base">
@@ -280,7 +290,7 @@ export default function Shifts() {
                                     <Select
                                       isRequired={true}
                                       options={isPrivatess}
-                                      isValueSelected={dataAbsensi.isPrivate}
+                                      isValueSelected={`${dataAbsensi.isPrivate}`}
                                       placeholder="Pilih Opsi"
                                       onChange={(value: string) => {
                                         setDataAbsensi({
@@ -298,17 +308,21 @@ export default function Shifts() {
                                       <TextArea
                                         className="resize-none"
                                         placeholder="tulis apapun kegiatanmu disini"
-                                        minLength={30}
-                                        maxLength={200}
                                         value={dataAbsensi.keterangan}
-                                        onChange={(value) =>
+                                        onChange={(value) => {
                                           setDataAbsensi({
                                             ...dataAbsensi,
                                             keterangan: value,
-                                          })
-                                        }
+                                          });
+                                        }}
                                         rows={6}
                                       />
+                                      <p>{dataAbsensi.keterangan.length}/10</p>
+                                      {dataAbsensi.keterangan.length < 10 && (
+                                        <p className="text-red-500">
+                                          Minimal 10 karakter
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                 </div>

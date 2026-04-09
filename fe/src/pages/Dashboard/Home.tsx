@@ -59,12 +59,12 @@ export default function Home() {
     },
   ];
   const { data: Absensis } = useAbsensiByIsPrivate(false, page, search);
-
+  const [selectedAbsensi, setSelectedAbsensi] = useState(null);
   return (
     <>
       <PageMeta title="Dashboad - Absensi" description="" />
       <PageBreadcrumb pageTitle="Dashboad" />
-      <h1 className="text-center text-2xl font-semibold dark:text-white/90 mb-6">
+      <h1 className="text-center text-2xl font-semibold text-black dark:text-white/90 mb-6">
         Halooo {user.name}, semoga harimu menyenangkan 🤗
       </h1>
       <input
@@ -155,7 +155,14 @@ export default function Home() {
                       {Absensi.keterangan.slice(0, 40)}
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                      {Absensi.status}
+                      <Badge
+                        variant="light"
+                        color={
+                          Absensi.status !== "TERLAMBAT" ? "success" : "warning"
+                        }
+                      >
+                        {Absensi.status}
+                      </Badge>
                     </TableCell>
                     <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                       <Badge
@@ -184,51 +191,13 @@ export default function Home() {
                       <Button
                         onClick={() => {
                           detailRef.current?.showModal();
+                          setSelectedAbsensi(Absensi);
                         }}
                         variant="primary"
                         size="sm"
                       >
                         <PencilIcon />{" "}
                       </Button>
-                      <dialog
-                        ref={detailRef}
-                        className="modal modal-bottom sm:modal-middle"
-                      >
-                        <div className="modal-action">
-                          <div className="modal-box dark:bg-black border-white border">
-                            <div className="flex justify-between">
-                              <div>
-                                <h3 className="font-normal text-base">
-                                  Halo {Absensi.UserName}
-                                </h3>
-                              </div>
-                              <form method="dialog">
-                                <button className="btn">Close</button>
-                              </form>
-                            </div>
-                            <p>
-                              <span className="font-semibold">
-                                Keterangan Absen :
-                              </span>
-                              {Absensi.keterangan}
-                            </p>
-                            <p>
-                              <span className="font-semibold">
-                                Dibuat Pada :
-                              </span>{" "}
-                              {new Date(Absensi.created_at).toLocaleString(
-                                "id-ID",
-                                {
-                                  weekday: "long",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                  hour12: false,
-                                },
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                      </dialog>
                     </TableCell>
                   </TableRow>
                 ),
@@ -238,9 +207,10 @@ export default function Home() {
         </div>
         {(Absensis as any)?.content?.length > 0 && (
           <>
+            {" "}
             <div className="flex justify-end mt-10">
               {" "}
-              <span className="text-sm font-medium dark:placeholder:text-white/50 dark:text-white/50">
+              <span className="text-sm font-medium text-black dark:placeholder:text-white/50 dark:text-white/50">
                 Halaman {page + 1} dari {(Absensis as any)?.totalPages}
               </span>
             </div>
@@ -250,7 +220,7 @@ export default function Home() {
                 <button
                   onClick={() => setPage((old) => Math.max(old - 1, 0))}
                   disabled={page === 0}
-                  className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                  className="px-4 py-2 rounded bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                 >
                   Prev
                 </button>
@@ -264,7 +234,7 @@ export default function Home() {
               ${
                 page === i
                   ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
                     >
                       {i + 1}
@@ -280,7 +250,7 @@ export default function Home() {
                     )
                   }
                   disabled={page + 1 >= (Absensis as any)?.totalPages}
-                  className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                  className="px-4 py-2 rounded bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                 >
                   Next
                 </button>
@@ -309,6 +279,38 @@ export default function Home() {
               alt="Foto User"
               className="h-auto w-80 rounded-md object-cover my-4"
             />
+          </div>
+        </div>
+      </dialog>
+      <dialog ref={detailRef} className="modal modal-bottom sm:modal-middle">
+        <div className="modal-action">
+          <div className="modal-box dark:bg-black border-white border">
+            <div className="flex justify-between">
+              <div>
+                <h3 className="font-normal text-base">
+                  Halo {(selectedAbsensi as any)?.UserName}
+                </h3>
+              </div>
+              <form method="dialog">
+                <button className="btn">Close</button>
+              </form>
+            </div>
+            <p>
+              <span className="font-semibold">Keterangan Absen :</span>
+              {(selectedAbsensi as any)?.keterangan}
+            </p>
+            <p>
+              <span className="font-semibold">Dibuat Pada :</span>{" "}
+              {new Date((selectedAbsensi as any)?.created_at).toLocaleString(
+                "id-ID",
+                {
+                  weekday: "long",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                },
+              )}
+            </p>
           </div>
         </div>
       </dialog>

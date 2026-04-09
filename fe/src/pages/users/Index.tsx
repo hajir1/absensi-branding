@@ -327,7 +327,7 @@ export default function User() {
                             className="modal modal-bottom sm:modal-middle "
                           >
                             <div className="modal-action">
-                              <div className="modal-box dark:bg-black border-white border">
+                              <div className="modal-box bg-white dark:bg-black border-white border">
                                 <div className="flex justify-between">
                                   <div>
                                     <h3 className="font-normal text-base">
@@ -492,7 +492,7 @@ export default function User() {
                               </div>
                             </div>
                           </dialog>
-                          {User.roleName !== "Admin" && (
+                          {/* {User.roleName !== "Admin" && (
                             <Button
                               onClick={() => {
                                 sweetAlertConfirm(
@@ -524,7 +524,7 @@ export default function User() {
                             >
                               <TrashBinIcon />
                             </Button>
-                          )}
+                          )} */}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -537,7 +537,7 @@ export default function User() {
                 {" "}
                 <div className="flex justify-end mt-10">
                   {" "}
-                  <span className="text-sm font-medium dark:placeholder:text-white/50 dark:text-white/50">
+                  <span className="text-sm font-medium text-black dark:placeholder:text-white/50 dark:text-white/50">
                     Halaman {page + 1} dari {(users as any)?.totalPages}
                   </span>
                 </div>
@@ -547,7 +547,7 @@ export default function User() {
                     <button
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
                       disabled={page === 0}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Prev
                     </button>
@@ -561,7 +561,7 @@ export default function User() {
               ${
                 page === i
                   ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
                         >
                           {i + 1}
@@ -577,7 +577,7 @@ export default function User() {
                         )
                       }
                       disabled={page + 1 >= (users as any)?.totalPages}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Next
                     </button>
@@ -591,7 +591,7 @@ export default function User() {
 
       <dialog ref={imgRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-end">
               <form method="dialog">
                 <button
@@ -614,7 +614,7 @@ export default function User() {
       </dialog>
       <dialog ref={createRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box">
+          <div className=" bg-white dark:bg-black border-white border p-4">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>
@@ -675,7 +675,7 @@ export default function User() {
                     onChange={(value: string) => {
                       setDataUser({ ...dataUser, divisiId: parseInt(value) });
                     }}
-                    className="dark:bg-dark-900"
+                    className="bg-white dark:bg-dark-900"
                   />
                 </div>
                 <div className="col-span-2 lg:col-span-1 my-4">
@@ -701,7 +701,7 @@ export default function User() {
                         role_nama: selectedRole?.nama,
                       });
                     }}
-                    className="dark:bg-dark-900"
+                    className="bg-white dark:bg-dark-900"
                   />
                 </div>
               </div>
@@ -737,7 +737,7 @@ export default function User() {
                           mentorId: parseInt(value),
                         });
                       }}
-                      className="dark:bg-dark-900"
+                      className="bg-white dark:bg-dark-900"
                     />
                   </div>
                 )}
@@ -762,9 +762,9 @@ export default function User() {
                       className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
                     >
                       {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                        <EyeIcon className="fill-gray-500 bg-white dark:fill-gray-400 size-5" />
                       ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                        <EyeCloseIcon className="fill-gray-500 bg-white dark:fill-gray-400 size-5" />
                       )}
                     </span>
                   </div>

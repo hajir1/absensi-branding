@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { useAuthStore } from "./state";
 import axios from "axios";
 
@@ -36,7 +32,7 @@ api.interceptors.response.use(
   (response) => response,
 
   (error) => {
-    console.log("error")
+    console.log("error");
     if (error?.status === 401) {
       // logout state
       useAuthStore.getState().logout();
@@ -517,7 +513,7 @@ export const useAbsensis = (page: Number, search: String) => {
       );
       return response.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   return responses;
@@ -538,7 +534,7 @@ export const useAbsensiByUser = (userId: number, page: Number) => {
       );
       return response.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   return responses;
@@ -568,7 +564,7 @@ export const useAbsensiByMentor = (
       );
       return response.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   return responses;
@@ -580,11 +576,7 @@ export const useAbsensiByIsPrivate = (
 ) => {
   const querySearch = search ? `&search=${search}` : "";
   const responses = useQuery<MetaData, Error, unknown, string[]>({
-    queryKey: [
-      "absensis",
-      page.toString(),
-      search.toString(),
-    ],
+    queryKey: ["absensis", page.toString(), search.toString()],
     queryFn: async () => {
       const response = await api.get(
         `${BASE_URL}/absensis/isPrivate/${n}?page=${page}&size=${size}${querySearch}`,
@@ -597,7 +589,7 @@ export const useAbsensiByIsPrivate = (
       );
       return response.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   return responses;

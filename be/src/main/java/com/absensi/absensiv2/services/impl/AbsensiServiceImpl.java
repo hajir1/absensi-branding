@@ -63,12 +63,16 @@ public class AbsensiServiceImpl implements AbsensiService {
          */
         if(jamAbsensi.isAfter(batasTelat) && req.getJenis().equals("DATANG")){
             absensi.setStatus(StatusAbsensi.TERLAMBAT);
+        }else{
+            absensi.setStatus(StatusAbsensi.valueOf(req.getStatus()));
         }
+        System.out.println(jamShift);
+        System.out.println(jamAbsensi);
+        System.out.println(batasTelat);
         absensi.setUser(user);
         absensi.setShift(shift);
         absensi.setKeterangan(req.getKeterangan());
         absensi.setIsPrivate(req.getIsPrivate());
-        absensi.setStatus(StatusAbsensi.valueOf(req.getStatus()));
         absensi.setJenis(Jenis.valueOf(req.getJenis()));
         absensi.setApproval(Approval.PENDING);
         if(absensi.getTanggal() == null){
