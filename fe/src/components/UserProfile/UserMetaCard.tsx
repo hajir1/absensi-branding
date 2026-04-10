@@ -198,7 +198,7 @@ export default function UserMetaCard() {
 
       <dialog ref={updateRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box">
+          <div className="modal-box dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">

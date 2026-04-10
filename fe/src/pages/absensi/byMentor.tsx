@@ -306,7 +306,7 @@ export default function AbsensiByMentor() {
                                 >
                                   <div className="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
                                     <div className="col-span-2 lg:col-span-1 my-4">
-                                      <Label>Divisi</Label>
+                                      <Label>Approval</Label>
                                       <Select
                                         isValueSelected={dataAbsensi.n}
                                         options={(approvalOptions as any)?.map(

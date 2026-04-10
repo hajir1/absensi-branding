@@ -3,7 +3,6 @@ package com.absensi.absensiv2.controllers;
 
 import com.absensi.absensiv2.dtos.*;
 import com.absensi.absensiv2.dtos.AbsensiRequest;
-import com.absensi.absensiv2.enums.Role;
 import com.absensi.absensiv2.services.AbsensiService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/absensis")

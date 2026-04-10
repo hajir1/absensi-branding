@@ -5,11 +5,9 @@ import com.absensi.absensiv2.dtos.AbsensiRequest;
 import com.absensi.absensiv2.dtos.AbsensiResponse;
 import com.absensi.absensiv2.dtos.ApprovalRequest;
 import com.absensi.absensiv2.dtos.WebResponse;
-import com.absensi.absensiv2.models.Absensi;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
 
 
 /**
