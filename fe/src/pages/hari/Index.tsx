@@ -24,32 +24,33 @@ import {
 } from "../../services/API_Query";
 import { PencilIcon, TrashBinIcon } from "../../icons";
 import Select from "../../components/form/Select";
+import { daysOption } from "../../helpers/data";
 
 export default function Hari() {
-  const { data: haris } = useHari();
-
+  
+  /**
+   * state
+   */
   const [dataHari, setDataHari] = useState({
     id: 0,
     nama: "",
   });
   const [errorHari, setErrorHari] = useState("");
 
+  /**
+   * ref
+   */
   const createRef = useRef(null);
   const updateRef = useRef(null);
-
+  
+  /**
+   * crud
+   */
+  const { data: haris } = useHari();
   const createHari = useCreateHari(); // ⭐ panggil di atas
   const updateHari = useUpdateHari(); // ⭐ panggil di atas
   const deleteHari = useDeleteHari(); // ⭐ panggil di atas
 
-  const options = [
-    { value: "SENIN", label: "Senin" },
-    { value: "SELASA", label: "Selasa" },
-    { value: "RABU", label: "Rabu" },
-    { value: "KAMIS", label: "Kamis" },
-    { value: "JUMAT", label: "Jumat" },
-    { value: "SABTU", label: "Sabtu" },
-    { value: "MINGGU", label: "Minggu" },
-  ];
 
   return (
     <>
@@ -123,7 +124,7 @@ export default function Hari() {
                           className="modal modal-bottom sm:modal-middle"
                         >
                           <div className="modal-action">
-                            <div className="modal-box dark:bg-black border-white border">
+                            <div className="modal-box bg-white dark:bg-black border-white border">
                               <div className="flex justify-between">
                                 <div>
                                   <h3 className="font-normal text-base">
@@ -171,7 +172,7 @@ export default function Hari() {
                                     <Label>Nama Hari</Label>
                                     <Select
                                       isRequired={true}
-                                      options={options}
+                                      options={daysOption}
                                       isValueSelected={dataHari.nama}
                                       placeholder="Pilih Opsi"
                                       onChange={(value: string) => {
@@ -231,9 +232,11 @@ export default function Hari() {
         </ComponentCard>
       </div>
 
+
+{/* create modal */}
       <dialog ref={createRef} className="modal modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>
@@ -271,7 +274,7 @@ export default function Hari() {
                   <Select
                     isRequired={true}
                     isValueSelected={dataHari.nama}
-                    options={options}
+                    options={daysOption}
                     placeholder="Pilih Opsi"
                     onChange={(value: string) => {
                       setDataHari({ ...dataHari, nama: value });

@@ -29,14 +29,14 @@ import {
 import { EyeCloseIcon, EyeIcon, PencilIcon, TrashBinIcon } from "../../icons";
 import Select from "../../components/form/Select";
 import Badge from "../../components/ui/badge/Badge";
+import { usersTh } from "../../helpers/data";
 
 export default function User() {
+  /**
+   * state
+   */
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState("");
-  const { data: users } = useUsers(page, 10, search);
-  const { data: divisis } = useDivisi();
-  const { data: mentors } = useMentor(users);
-  const { data: roles } = useRole();
   const [dataUser, setDataUser] = useState({
     id: 0,
     username: "",
@@ -50,6 +50,32 @@ export default function User() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+
+  const [errorUser, setErrorUser] = useState({ email: "", all: "" });
+  const [imgModal, setImgModal] = useState(null);
+
+  /**
+   * api
+   */
+  const { data: users } = useUsers(page, 10, search);
+  const { data: divisis } = useDivisi();
+  const { data: mentors } = useMentor(users);
+  const { data: roles } = useRole();
+  const createUser = useCreateUser(); // ⭐ panggil di atas
+  const updateUser = useUpdateUser(); // ⭐ panggil di atas
+  const deleteUser = useDeleteUser(); // ⭐ panggil di atas
+
+  
+  /**
+   * ref
+  */
+  const createRef = useRef(null);
+  const updateRef = useRef(null);
+  const imgRef = useRef(null);
+
+  /**
+   * handler
+   */
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -107,49 +133,6 @@ export default function User() {
       setErrorUser({ email: "", all: (error as any)?.response?.data?.message });
     }
   };
-  const [errorUser, setErrorUser] = useState({ email: "", all: "" });
-
-  const createRef = useRef(null);
-  const updateRef = useRef(null);
-  const imgRef = useRef(null);
-  const [imgModal, setImgModal] = useState(null);
-
-  const createUser = useCreateUser(); // ⭐ panggil di atas
-  const updateUser = useUpdateUser(); // ⭐ panggil di atas
-  const deleteUser = useDeleteUser(); // ⭐ panggil di atas
-
-  const optionsTable = [
-    {
-      name: "Id",
-    },
-    {
-      name: "Nama Pengguna",
-    },
-    {
-      name: "Nim",
-    },
-    // {
-    //   name: "Email",
-    // },
-    {
-      name: "Terverifikasi",
-    },
-    {
-      name: "Foto",
-    },
-    {
-      name: "Validator",
-    },
-    {
-      name: "Role",
-    },
-    {
-      name: "Divisi",
-    },
-    {
-      name: "Opsi",
-    },
-  ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -237,7 +220,7 @@ export default function User() {
                 {/* Table Header */}
                 <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                   <TableRow>
-                    {optionsTable.map((option, index) => (
+                    {usersTh.map((option, index) => (
                       <TableCell
                         key={index}
                         isHeader
@@ -327,7 +310,7 @@ export default function User() {
                             className="modal modal-bottom sm:modal-middle "
                           >
                             <div className="modal-action">
-                              <div className="modal-box dark:bg-black border-white border">
+                              <div className="modal-box bg-white dark:bg-black border-white border">
                                 <div className="flex justify-between">
                                   <div>
                                     <h3 className="font-normal text-base">
@@ -449,38 +432,6 @@ export default function User() {
                                       </div>
                                     )}
                                   </div>
-                                  {/* <div className="grid grid-cols-1 gap-x-6 gap-y-5">
-                                    <Label>Foto Profile</Label>
-                                    {file || User.foto ? (
-                                      <img
-                                        src={`http://localhost:8080/uploads/${User.foto}`}
-                                        alt="Foto User"
-                                        className="h-12 w-12 rounded-full object-cover"
-                                      />
-                                    ) : (
-                                      <img
-                                        className="w-44 h-44"
-                                        src={"/images/create-img/img.avif"}
-                                        alt=""
-                                      />
-                                    )}
-                                    <label
-                                      htmlFor="file-upload"
-                                      className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                                    >
-                                      <span>Upload a file</span>
-                                      <input
-                                        id="file-upload"
-                                        name="file-upload"
-                                        type="file"
-                                        onChange={(e) => handleImageChange(e)}
-                                        className="sr-only my-2"
-                                      />
-                                    </label>
-                                    <p className="text-xs leading-5 text-gray-600">
-                                      PNG, JPG, JPEG up to 5MB
-                                    </p>
-                                  </div> */}
                                   <Button
                                     type="submit"
                                     className="w-full"
@@ -532,12 +483,14 @@ export default function User() {
                 </TableBody>
               </Table>
             </div>
+
+            {/* pagination */}
             {(users as any)?.content.length > 0 && (
               <>
                 {" "}
                 <div className="flex justify-end mt-10">
                   {" "}
-                  <span className="text-sm font-medium dark:placeholder:text-white/50 dark:text-white/50">
+                  <span className="text-sm font-medium text-black dark:placeholder:text-white/50 dark:text-white/50">
                     Halaman {page + 1} dari {(users as any)?.totalPages}
                   </span>
                 </div>
@@ -547,7 +500,7 @@ export default function User() {
                     <button
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
                       disabled={page === 0}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Prev
                     </button>
@@ -561,7 +514,7 @@ export default function User() {
               ${
                 page === i
                   ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
                         >
                           {i + 1}
@@ -577,7 +530,7 @@ export default function User() {
                         )
                       }
                       disabled={page + 1 >= (users as any)?.totalPages}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Next
                     </button>
@@ -589,9 +542,10 @@ export default function User() {
         </ComponentCard>
       </div>
 
+      {/* perbesar gambar */}
       <dialog ref={imgRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-end">
               <form method="dialog">
                 <button
@@ -612,9 +566,10 @@ export default function User() {
           </div>
         </div>
       </dialog>
+      {/* modalbox create */}
       <dialog ref={createRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box">
+          <div className=" bg-white dark:bg-black border-white border p-4">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>
@@ -675,7 +630,7 @@ export default function User() {
                     onChange={(value: string) => {
                       setDataUser({ ...dataUser, divisiId: parseInt(value) });
                     }}
-                    className="dark:bg-dark-900"
+                    className="bg-white dark:bg-dark-900"
                   />
                 </div>
                 <div className="col-span-2 lg:col-span-1 my-4">
@@ -701,7 +656,7 @@ export default function User() {
                         role_nama: selectedRole?.nama,
                       });
                     }}
-                    className="dark:bg-dark-900"
+                    className="bg-white dark:bg-dark-900"
                   />
                 </div>
               </div>
@@ -737,7 +692,7 @@ export default function User() {
                           mentorId: parseInt(value),
                         });
                       }}
-                      className="dark:bg-dark-900"
+                      className="bg-white dark:bg-dark-900"
                     />
                   </div>
                 )}
@@ -762,9 +717,9 @@ export default function User() {
                       className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
                     >
                       {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                        <EyeIcon className="fill-gray-500 bg-white dark:fill-gray-400 size-5" />
                       ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                        <EyeCloseIcon className="fill-gray-500 bg-white dark:fill-gray-400 size-5" />
                       )}
                     </span>
                   </div>

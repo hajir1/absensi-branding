@@ -5,6 +5,7 @@ import com.absensi.absensiv2.enums.Jenis;
 import com.absensi.absensiv2.enums.StatusAbsensi;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -58,12 +59,22 @@ public class Absensi {
     @JoinColumn(name = "shift_id", foreignKey = @ForeignKey(name = "fk_shift_id", foreignKeyDefinition = "FOREIGN KEY (shift_id) REFERENCES shifts(id) ON DELETE CASCADE"))
     private Shift shift;
 
+//    @Query("""
+//            CREATE TRIGGER before_insert_users
+//                BEFORE INSERT ON users
+//                FOR EACH ROW
+//                SET NEW.created_at = NOW();
+//                SET NEW.updated_at = NOW();
+//            """);
+
     @PrePersist
     public void prePersist() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
 
     }
+
+
 
     @PreUpdate
     public void preUpdate() {

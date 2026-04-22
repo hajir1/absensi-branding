@@ -40,7 +40,6 @@ public class AbsensiServiceImpl implements AbsensiService {
         /**
          * modul 1
          */
-        System.out.println("test");
         Absensi absensi = new Absensi();
         User user = userRepository.findById(req.getUserId())
                 .orElseThrow(() -> new RuntimeException("Nama Pengguna Tidak Ditemukan"));
@@ -63,12 +62,13 @@ public class AbsensiServiceImpl implements AbsensiService {
          */
         if(jamAbsensi.isAfter(batasTelat) && req.getJenis().equals("DATANG")){
             absensi.setStatus(StatusAbsensi.TERLAMBAT);
+        }else{
+            absensi.setStatus(StatusAbsensi.valueOf(req.getStatus()));
         }
         absensi.setUser(user);
         absensi.setShift(shift);
         absensi.setKeterangan(req.getKeterangan());
         absensi.setIsPrivate(req.getIsPrivate());
-        absensi.setStatus(StatusAbsensi.valueOf(req.getStatus()));
         absensi.setJenis(Jenis.valueOf(req.getJenis()));
         absensi.setApproval(Approval.PENDING);
         if(absensi.getTanggal() == null){
@@ -214,6 +214,33 @@ public class AbsensiServiceImpl implements AbsensiService {
         if(req.getKeterangan() != null){
             existingAbsensi.setKeterangan(req.getKeterangan());
         }
+
+//        START TRANSACTION;
+//
+//        -- 1. Lock data absensi
+//        SELECT approval
+//        FROM absensis
+//        WHERE id = 10
+//        AND approval = 'PENDING'
+//        FOR UPDATE;
+//
+//        -- cek apakah ada row yang berubah
+//                -- kalau ROW_COUNT() = 0 → berarti bukan PENDING → ROLLBACK
+//
+//                -- 3. Update approval
+//        UPDATE absensis
+//        SET approval = 'DISETUJUI',
+//                updated_at = NOW()
+//        WHERE id = 10;
+//
+//        COMMIT;
+//        if(!String.valueOf(existingAbsensi.getApproval()).equals("PENDING")){
+//            throw new ResponseStatusException(
+//                    HttpStatus.BAD_REQUEST,
+//                    "Bukan Pending"
+//            );
+//        }
+
         if(req.getStatus() != null){
             existingAbsensi.setStatus(StatusAbsensi.valueOf(req.getStatus()));
         }

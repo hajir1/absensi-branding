@@ -14,41 +14,27 @@ import Badge from "../../components/ui/badge/Badge";
 import { useEffect, useRef, useState } from "react";
 import Button from "../../components/ui/button/Button";
 import { PencilIcon } from "../../icons";
+import { absensiByUserTh } from "../../helpers/data";
 
 export default function AbsensiByUser() {
+  /**
+   * state
+   */
   const currentUser = useUserStore((state) => state.user);
   const [page, setPage] = useState(0);
+  const [imgModal, setImgModal] = useState({ img: null, userName: null });
   // const [search, setSearch] = useState("");
+
+  /**
+   * api
+   */
   const { data: Absensis } = useAbsensiByUser(currentUser.id, page);
-  const optionsTable = [
-    {
-      name: "Id",
-    },
-    {
-      name: "Foto",
-    },
-    {
-      name: "Keterangan",
-    },
-    {
-      name: "Status",
-    },
-    {
-      name: "Approval",
-    },
-    {
-      name: "Tanggal",
-    },
-    {
-      name: "Jenis",
-    },
-    {
-      name: "Detail",
-    },
-  ];
+  
+  /**
+   * ref
+   */
   const imgRef = useRef(null);
   const detailRef = useRef(null);
-  const [imgModal, setImgModal] = useState({ img: null, userName: null });
 
   return (
     <>
@@ -74,7 +60,7 @@ export default function AbsensiByUser() {
                 {/* Table Header */}
                 <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                   <TableRow>
-                    {optionsTable.map((option, index) => (
+                    {absensiByUserTh.map((option, index) => (
                       <TableCell
                         key={index}
                         isHeader
@@ -120,7 +106,16 @@ export default function AbsensiByUser() {
                           {Absensi.keterangan.slice(0, 40)}
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                          {Absensi.status}
+                          <Badge
+                            variant="light"
+                            color={
+                              Absensi.status !== "TERLAMBAT"
+                                ? "success"
+                                : "warning"
+                            }
+                          >
+                            {Absensi.status}
+                          </Badge>
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                           <Badge
@@ -203,7 +198,7 @@ export default function AbsensiByUser() {
                 {" "}
                 <div className="flex justify-end mt-10">
                   {" "}
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium text-black dark:text-white/80">
                     Halaman {page + 1} dari {(Absensis as any)?.totalPages}
                   </span>
                 </div>
@@ -213,7 +208,7 @@ export default function AbsensiByUser() {
                     <button
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
                       disabled={page === 0}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Prev
                     </button>
@@ -227,7 +222,7 @@ export default function AbsensiByUser() {
               ${
                 page === i
                   ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
                         >
                           {i + 1}
@@ -245,7 +240,7 @@ export default function AbsensiByUser() {
                         )
                       }
                       disabled={page + 1 >= (Absensis as any)?.totalPages}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-white dark:bg-black bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
                     >
                       Next
                     </button>
@@ -256,6 +251,8 @@ export default function AbsensiByUser() {
           </div>
         </ComponentCard>
       </div>
+
+      {/* perbesar gambar */}
       <dialog ref={imgRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
           <div className="modal-box dark:bg-black border-white border">

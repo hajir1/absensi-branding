@@ -60,6 +60,11 @@ api.interceptors.response.use(
         // Refresh gagal → logout
         useAuthStore.getState().logout();
 
+        // if (
+        //   !(window.location.pathname !== "/signup") ||
+        //   window.location.pathname !== "/"
+        // ) {
+        // }
         window.location.href = "/login";
 
         return Promise.reject(refreshError);

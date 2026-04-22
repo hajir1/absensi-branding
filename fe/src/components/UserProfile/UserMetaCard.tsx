@@ -41,7 +41,10 @@ export default function UserMetaCard() {
   const { data: mentors } = useMentor(currentUser);
   const updateUser = useUpdateUser(); // ⭐ panggil di atas
   const imgRef = useRef(null);
-  const [imgModal, setImgModal] = useState(null);
+  const [imgModal, setImgModal] = useState({
+    img: null as string | null,
+    userName: null as string | null,
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -98,6 +101,10 @@ export default function UserMetaCard() {
       setErrorUser((error as any)?.response?.data?.message);
     }
   };
+  useEffect(() => {
+    console.log(imgModal);
+  }, [imgModal]);
+
   return (
     <>
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
@@ -114,7 +121,13 @@ export default function UserMetaCard() {
                 <img
                   onClick={() => {
                     (imgRef.current?.showModal(),
-                      setImgModal((currentUser as any).foto));
+                      setImgModal({
+                        img: (currentUser as unknown as currentUserSessionsType)
+                          ?.foto,
+                        userName: (
+                          currentUser as unknown as currentUserSessionsType
+                        )?.name,
+                      }));
                   }}
                   src={`http://localhost:8080/profile/${(currentUser as unknown as currentUserSessionsType)?.foto}`}
                   alt="Foto User"
@@ -370,7 +383,7 @@ export default function UserMetaCard() {
                 <button
                   className="btn"
                   onClick={() => {
-                    setImgModal(null);
+                    setImgModal({ img: null, userName: null });
                   }}
                 >
                   Close
@@ -378,7 +391,7 @@ export default function UserMetaCard() {
               </form>
             </div>
             <img
-              src={`http://localhost:8080/uploads/${imgModal}`}
+              src={`http://localhost:8080/profile/${imgModal.img}`}
               alt="Foto User"
               className="h-auto w-80 rounded-md object-cover my-4"
             />

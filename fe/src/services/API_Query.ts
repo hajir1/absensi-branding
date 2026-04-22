@@ -2,6 +2,7 @@ import {
   useMutation,
   useQuery,
   useQueryClient,
+  keepPreviousData,
 } from "@tanstack/react-query";
 import { useAuthStore } from "./state";
 import axios from "axios";
@@ -36,19 +37,50 @@ api.interceptors.response.use(
   (response) => response,
 
   (error) => {
-    console.log("error")
     if (error?.status === 401) {
       // logout state
       useAuthStore.getState().logout();
 
-      // redirect login
-      window.location.href = "/signin";
+      if (!(window.location.pathname === "/signup")) {
+        // redirect login
+        window.location.href = "/signin";
+      }
     }
 
     return Promise.reject(error);
   },
 );
 
+/** fetch for excel download */
+export const useExcelByMentor = (
+  mentorId: number,
+  date: string,
+  search: String,
+) => {
+  const querySearch = search ? `search=${search}` : "";
+  return useMutation({
+    mutationFn: async () => {
+      const response = await api.get(
+        `${BASE_URL}/excel/download/byMentor/${mentorId}?date=${date}&${querySearch}`,
+        {
+          responseType: "blob", // 🔥 penting!
+        },
+      );
+
+      return response.data;
+    },
+    onSuccess: (data) => {
+      // bikin file download
+      const url = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "data-absensi.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    },
+  });
+};
 /** fetch for get all divisi */
 export const useDivisi = () => {
   const responses = useQuery<MetaData, Error, unknown, string[]>({
@@ -517,7 +549,7 @@ export const useAbsensis = (page: Number, search: String) => {
       );
       return response.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   return responses;
@@ -538,7 +570,7 @@ export const useAbsensiByUser = (userId: number, page: Number) => {
       );
       return response.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   return responses;
@@ -568,7 +600,7 @@ export const useAbsensiByMentor = (
       );
       return response.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   return responses;
@@ -580,11 +612,7 @@ export const useAbsensiByIsPrivate = (
 ) => {
   const querySearch = search ? `&search=${search}` : "";
   const responses = useQuery<MetaData, Error, unknown, string[]>({
-    queryKey: [
-      "absensis",
-      page.toString(),
-      search.toString(),
-    ],
+    queryKey: ["absensis", page.toString(), search.toString()],
     queryFn: async () => {
       const response = await api.get(
         `${BASE_URL}/absensis/isPrivate/${n}?page=${page}&size=${size}${querySearch}`,
@@ -597,7 +625,7 @@ export const useAbsensiByIsPrivate = (
       );
       return response.data;
     },
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
   return responses;

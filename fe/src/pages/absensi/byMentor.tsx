@@ -16,70 +16,52 @@ import {
 import {
   useAbsensiByMentor,
   useApprovalAbsensi,
+  useExcelByMentor,
 } from "../../services/API_Query";
-import { PencilIcon } from "../../icons";
+import { FileIcon, PencilIcon } from "../../icons";
 import Select from "../../components/form/Select";
 import { useUserStore } from "../../services/state";
 import Badge from "../../components/ui/badge/Badge";
 import TextArea from "../../components/form/input/TextArea";
+import { absensiTh, approvalOptions } from "../../helpers/data";
 
 export default function AbsensiByMentor() {
+  /**
+   * state
+   */
   const currentUser = useUserStore((state) => state.user);
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState("");
-
-  const { data: Absensis } = useAbsensiByMentor(currentUser.id, page, search);
-  const useApproval = useApprovalAbsensi();
+  const [dateExcel, setDateExcel] = useState("");
+  const [errorAbsensi, setErrorAbsensi] = useState("");
+  const [imgModal, setImgModal] = useState({ img: null, userName: null });
   const [dataAbsensi, setDataAbsensi] = useState({
     id: 0,
     n: "",
     alasanApproval: "",
   });
-  const [errorAbsensi, setErrorAbsensi] = useState("");
+
+  /**
+   * api
+   */
+  const { data: Absensis } = useAbsensiByMentor(currentUser.id, page, search);
+  const useApproval = useApprovalAbsensi();
+
+  /**
+   * reference
+   */
   const updateRef = useRef(null);
   const imgRef = useRef(null);
   const detailRef = useRef(null);
-  const [imgModal, setImgModal] = useState({ img: null, userName: null });
 
-  const optionsTable = [
-    {
-      name: "Id",
-    },
-    {
-      name: "Nama Pengguna",
-    },
-    {
-      name: "Foto",
-    },
-    {
-      name: "Keterangan",
-    },
-    {
-      name: "Status",
-    },
-    {
-      name: "Approval",
-    },
-    {
-      name: "Tanggal",
-    },
-    {
-      name: "Jenis",
-    },
-    {
-      name: "Dibuat Pada",
-    },
-    {
-      name: "Privasi",
-    },
-    {
-      name: "Opsi",
-    },
-  ];
-  const approvalOptions = [
-    { value: "DISETUJUI", label: "Disetujui" },
-    { value: "TIDAK", label: "Tidak Disetujui" },
-  ];
+  /**
+   * excel
+   */
+  const { mutate: downloadExcel, isPending } = useExcelByMentor(
+    currentUser.id,
+    dateExcel,
+    search,
+  );
 
   return (
     <>
@@ -88,7 +70,6 @@ export default function AbsensiByMentor() {
 
       <div className="space-y-6">
         <ComponentCard title="Absensi">
-
           <input
             type="text"
             placeholder="Cari nama user..."
@@ -99,13 +80,35 @@ export default function AbsensiByMentor() {
             }}
             className="w-full mb-4 px-3 py-2 border rounded dark:placeholder:text-white/50 dark:text-white/50"
           />
+          <div className="flex justify-end gap-2 items-center">
+            <input
+              className="px-3 border text-white rounded dark:placeholder:text-white/50 dark:text-white/50"
+              type="month"
+              name="month"
+              id=""
+              value={dateExcel}
+              onChange={(e) => {
+                setDateExcel(e.target.value);
+              }}
+            />
+            <Button
+              className=""
+              onClick={async () => {
+                downloadExcel();
+              }}
+              variant="success"
+              size="sm"
+            >
+              <FileIcon /> {isPending ? "Downloading..." : "Download Excel"}
+            </Button>
+          </div>
           <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
             <div className="max-w-full overflow-x-auto">
               <Table>
                 {/* Table Header */}
                 <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                   <TableRow>
-                    {optionsTable.map((option, index) => (
+                    {absensiTh.map((option, index) => (
                       <TableCell
                         key={index}
                         isHeader
@@ -154,7 +157,16 @@ export default function AbsensiByMentor() {
                           {Absensi.keterangan.slice(0, 40)}
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                          {Absensi.status}
+                          <Badge
+                            variant="light"
+                            color={
+                              Absensi.status !== "TERLAMBAT"
+                                ? "success"
+                                : "warning"
+                            }
+                          >
+                            {Absensi.status}
+                          </Badge>
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                           <Badge
@@ -169,7 +181,16 @@ export default function AbsensiByMentor() {
                           </Badge>
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                          {Absensi.tanggal}
+                          {Absensi.tanggal} <br />
+                          {new Date(Absensi.created_at).toLocaleString(
+                            "id-ID",
+                            {
+                              weekday: "long",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: false,
+                            },
+                          )}
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                           <Badge
@@ -180,17 +201,6 @@ export default function AbsensiByMentor() {
                           >
                             {Absensi.jenis}
                           </Badge>
-                        </TableCell>
-                        <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                          {new Date(Absensi.created_at).toLocaleString(
-                            "id-ID",
-                            {
-                              weekday: "long",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              hour12: false,
-                            },
-                          )}
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                           {Absensi.isPrivate ? "Private" : "Public"}
@@ -363,11 +373,13 @@ export default function AbsensiByMentor() {
                 </TableBody>
               </Table>
             </div>
+            
+            {/* pagination */}
             {(Absensis as any)?.content?.length > 0 && (
               <>
                 <div className="flex justify-end mt-10">
                   {" "}
-                  <span className="text-sm font-medium dark:placeholder:text-white/50 dark:text-white/50">
+                  <span className="text-sm font-medium text-black dark:placeholder:text-white/50 dark:text-white/50">
                     Halaman {page + 1} dari {(Absensis as any)?.totalPages}
                   </span>
                 </div>
@@ -377,7 +389,7 @@ export default function AbsensiByMentor() {
                     <button
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
                       disabled={page === 0}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Prev
                     </button>
@@ -391,7 +403,7 @@ export default function AbsensiByMentor() {
               ${
                 page === i
                   ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
                         >
                           {i + 1}
@@ -409,7 +421,7 @@ export default function AbsensiByMentor() {
                         )
                       }
                       disabled={page + 1 >= (Absensis as any)?.totalPages}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Next
                     </button>
@@ -420,6 +432,8 @@ export default function AbsensiByMentor() {
           </div>
         </ComponentCard>
       </div>
+
+      {/* perbesar gambar */}
       <dialog ref={imgRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
           <div className="modal-box dark:bg-black border-white border">

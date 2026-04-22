@@ -365,7 +365,7 @@ const AppSidebar: React.FC = () => {
         <Link to="/">
           {isExpanded || isHovered || isMobileOpen ? (
             <>
-              <h1>WEB_ABSENSI - BRAND_UM </h1>
+              <h1 className="dark:text-white/80 text-black">WEB_ABSENSI - BRAND_UM </h1>
               {/* <img
                 className="dark:hidden"
                 src="/images/logo/logo.svg"

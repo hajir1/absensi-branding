@@ -28,13 +28,14 @@ import {
 import { PencilIcon, TimeIcon, TrashBinIcon } from "../../icons";
 import Select from "../../components/form/Select";
 import { toMinutes } from "../../helpers/toMinute";
+import { shiftsTh } from "../../helpers/data";
 
 export default function Shifts() {
+  /**
+   * state
+   */
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState("");
-  const { data: Shifts } = useShifts(page, search);
-  const { data: haris } = useHari();
-  const { data: users } = useUsers(page, 50, "");
   const [dataShift, setDataShift] = useState({
     id: 0,
     userId: "",
@@ -45,35 +46,22 @@ export default function Shifts() {
   });
   const [errorShift, setErrorShift] = useState("");
 
-  const createRef = useRef(null);
-  const updateRef = useRef(null);
-  const imgRef = useRef(null);
-  const [imgModal, setImgModal] = useState(null);
-
+  /**api */
+  const { data: Shifts } = useShifts(page, search);
+  const { data: haris } = useHari();
+  const { data: users } = useUsers(page, 50, "");
   const createShift = useCreateShift(); // ⭐ panggil di atas
   const updateShift = useUpdateShift(); // ⭐ panggil di atas
   const deleteShift = useDeleteShift(); // ⭐ panggil di atas
 
-  const optionsTable = [
-    {
-      name: "Id",
-    },
-    {
-      name: "Hari",
-    },
-    {
-      name: "Nama",
-    },
-    {
-      name: "Mulai Shift",
-    },
-    {
-      name: "Akhir Shift",
-    },
-    {
-      name: "Opsi",
-    },
-  ];
+  /**
+   * ref
+   */
+  const createRef = useRef(null);
+  const updateRef = useRef(null);
+
+
+  
   return (
     <>
       <PageMeta title="Shift - Absensi" description="" />
@@ -116,7 +104,7 @@ export default function Shifts() {
                 {/* Table Header */}
                 <TableHeader className="border-b border-gray-100 dark:border-white/[0.05]">
                   <TableRow>
-                    {optionsTable.map((option, index) => (
+                    {shiftsTh.map((option, index) => (
                       <TableCell
                         key={index}
                         isHeader
@@ -148,6 +136,9 @@ export default function Shifts() {
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                           {Shift.akhir}
                         </TableCell>
+                        <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                          {Shift.toleransiMenit} menit
+                        </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400 space-x-4">
                           <Button
                             onClick={() => {
@@ -173,7 +164,7 @@ export default function Shifts() {
                             className="modal modal-bottom sm:modal-middle"
                           >
                             <div className="modal-action">
-                              <div className="modal-box dark:bg-black border-white border">
+                              <div className="modal-box bg-white dark:bg-black border-white border">
                                 <div className="flex justify-between">
                                   <div>
                                     <h3 className="font-normal text-base">
@@ -371,12 +362,14 @@ export default function Shifts() {
                 </TableBody>
               </Table>
             </div>
+
+            {/* pagination */}
             {(Shifts as any)?.content.length > 0 && (
               <>
                 {" "}
                 <div className="flex justify-end mt-10">
                   {" "}
-                  <span className="text-sm font-medium dark:placeholder:text-white/50 dark:text-white/50">
+                  <span className="text-sm font-medium text-black dark:placeholder:text-white/50 dark:text-white/50">
                     Halaman {page + 1} dari {(Shifts as any)?.totalPages}
                   </span>
                 </div>
@@ -386,7 +379,7 @@ export default function Shifts() {
                     <button
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
                       disabled={page === 0}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Prev
                     </button>
@@ -400,7 +393,7 @@ export default function Shifts() {
               ${
                 page === i
                   ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-100"
               }`}
                         >
                           {i + 1}
@@ -416,7 +409,7 @@ export default function Shifts() {
                         )
                       }
                       disabled={page + 1 >= (Shifts as any)?.totalPages}
-                      className="px-4 py-2 rounded bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Next
                     </button>
@@ -430,7 +423,7 @@ export default function Shifts() {
 
       <dialog ref={createRef} className="modal modal-middle">
         <div className="modal-action">
-          <div className="modal-box w-full max-w-5xl dark:bg-black border-white border">
+          <div className="modal-box w-full max-w-5xl bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Haloo</h3>

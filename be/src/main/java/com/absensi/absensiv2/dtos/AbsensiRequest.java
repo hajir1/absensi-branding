@@ -1,5 +1,7 @@
 package com.absensi.absensiv2.dtos;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalTime;

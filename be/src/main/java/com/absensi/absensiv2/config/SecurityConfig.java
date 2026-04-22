@@ -70,15 +70,15 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/v1/auth/**"
                         ).permitAll()
-                        .requestMatchers(
-                                "/api/v1/roles/get"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/profile/**"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/absensi/**"
-                        ).permitAll()
+//                        .requestMatchers(
+//                                "/api/v1/roles/get"
+//                        ).permitAll()
+//                        .requestMatchers(
+//                                "/profile/**"
+//                        ).permitAll()
+//                        .requestMatchers(
+//                                "/absensi/**"
+//                        ).permitAll()
                         .anyRequest().authenticated()
                 ).exceptionHandling(exs -> exs.authenticationEntryPoint((req,res,ex)->{
                     ex.printStackTrace();

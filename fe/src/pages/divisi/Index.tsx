@@ -26,16 +26,25 @@ import {
 import { PencilIcon, TrashBinIcon } from "../../icons";
 
 export default function Divisi() {
-  const { data: divisis } = useDivisi();
+  /**
+   * state
+   */
   const [dataDivisi, setDataDivisi] = useState({
     id: 0,
     nama: "",
   });
   const [errorDivisi, setErrorDivisi] = useState("");
 
+  /**
+   * ref
+   */
   const createRef = useRef(null);
   const updateRef = useRef(null);
 
+  /**
+   * crud divisi
+   */
+  const { data: divisis } = useDivisi();
   const createDivisi = useCreateDivisi(); // ⭐ panggil di atas
   const updateDivisi = useUpdateDivisi(); // ⭐ panggil di atas
   const deleteDivisi = useDeleteDivisi(); // ⭐ panggil di atas
@@ -143,7 +152,7 @@ export default function Divisi() {
 
       <dialog ref={updateRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>
@@ -205,9 +214,10 @@ export default function Divisi() {
         </div>
       </dialog>
 
+      {/* create modal */}
       <dialog ref={createRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>

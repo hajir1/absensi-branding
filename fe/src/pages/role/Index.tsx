@@ -26,16 +26,27 @@ import {
 import { PencilIcon, TrashBinIcon } from "../../icons";
 
 export default function Role() {
-  const { data: roles } = useRole();
+  /**
+   * state
+   * dataRole untuk menampung data role yang sedang dibuat atau diupdate
+   * errorRole untuk menampung pesan error jika terjadi kesalahan saat create, update, atau delete role
+   */
   const [dataRole, setDataRole] = useState({
     id: 0,
     nama: "",
   });
   const [errorRole, setErrorRole] = useState("");
 
+  /**
+   * ref untuk modal create dan update
+   */
   const createRef = useRef(null);
   const updateRef = useRef(null);
-
+  
+  /**
+   * crud role
+   */
+  const { data: roles } = useRole();
   const createRole = useCreateRole(); // ⭐ panggil di atas
   const updateRole = useUpdateRole(); // ⭐ panggil di atas
   const deleteRole = useDeleteRole(); // ⭐ panggil di atas
@@ -145,7 +156,7 @@ export default function Role() {
 
       <dialog ref={updateRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>
@@ -208,7 +219,7 @@ export default function Role() {
       </dialog>
       <dialog ref={createRef} className="modal modal-bottom sm:modal-middle">
         <div className="modal-action">
-          <div className="modal-box dark:bg-black border-white border">
+          <div className="modal-box bg-white dark:bg-black border-white border">
             <div className="flex justify-between">
               <div>
                 <h3 className="font-normal text-base">Halo Admin</h3>
