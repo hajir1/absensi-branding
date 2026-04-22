@@ -208,7 +208,7 @@ export default function AbsensiByUser() {
                     <button
                       onClick={() => setPage((old) => Math.max(old - 1, 0))}
                       disabled={page === 0}
-                      className="px-4 py-2 rounded text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-black dark:text-white bg-gray-200 dark:bg-black disabled:opacity-50 hover:bg-gray-300"
                     >
                       Prev
                     </button>
@@ -240,7 +240,7 @@ export default function AbsensiByUser() {
                         )
                       }
                       disabled={page + 1 >= (Absensis as any)?.totalPages}
-                      className="px-4 py-2 rounded text-white dark:bg-black bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
+                      className="px-4 py-2 rounded text-black dark:text-white dark:bg-black bg-gray-200 disabled:opacity-50 hover:bg-gray-300"
                     >
                       Next
                     </button>
