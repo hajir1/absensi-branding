@@ -32,7 +32,9 @@ export default function AbsensiByMentor() {
   const currentUser = useUserStore((state) => state.user);
   const [page, setPage] = useState(0);
   const [search, setSearch] = useState("");
-  const [dateExcel, setDateExcel] = useState("");
+  const [dateExcel, setDateExcel] = useState(
+    `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`,
+  );
   const [errorAbsensi, setErrorAbsensi] = useState("");
   const [imgModal, setImgModal] = useState({ img: null, userName: null });
   const [dataAbsensi, setDataAbsensi] = useState({
@@ -84,6 +86,7 @@ export default function AbsensiByMentor() {
             <input
               className="px-3 border text-white rounded dark:placeholder:text-white/50 dark:text-white/50"
               type="month"
+              required
               name="month"
               id=""
               value={dateExcel}
@@ -373,7 +376,7 @@ export default function AbsensiByMentor() {
                 </TableBody>
               </Table>
             </div>
-            
+
             {/* pagination */}
             {(Absensis as any)?.content?.length > 0 && (
               <>

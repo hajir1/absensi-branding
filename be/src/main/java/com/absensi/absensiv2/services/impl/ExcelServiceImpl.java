@@ -22,7 +22,7 @@ public class ExcelServiceImpl implements ExcelService {
 
     private final AbsensiRepository absensiRepository;
     public byte[] generateExcelByMentor(Integer mentorId,String date, String search) {
-        System.out.println("date"+date);
+        System.out.println("date"+ date);
         try (Workbook workbook = new XSSFWorkbook()) {
 
             Sheet sheet = workbook.createSheet("Data Absensi");
@@ -74,16 +74,14 @@ public class ExcelServiceImpl implements ExcelService {
 
             int year = Integer.parseInt(parts[0]);
             int month = Integer.parseInt(parts[1]);
+            System.out.println("year"+year);
+            System.out.println("month"+month);
             LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
             LocalDateTime end = start.plusMonths(1).minusSeconds(1);
 
             // ======================
             // AMBIL DATA
             // ======================
-            System.out.println("start"+start);
-            System.out.println("end"+end);
-            System.out.println("month"+month);
-            System.out.println("year"+year);
             List<Absensi> absensis = absensiRepository
                     .findByMentorMonthAndSearch(
                             mentorId,
