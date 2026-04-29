@@ -44,24 +44,7 @@ public interface AbsensiRepository extends JpaRepository<Absensi, Integer> {
             Boolean n,
             Pageable pageable
     );
-//    @Query("""
-//DELIMITER $$
-//
-//CREATE PROCEDURE find_absensi_by_mentor_and_username (
-//    IN p_mentor_id INT,
-//    IN p_username VARCHAR(255)
-//)
-//BEGIN
-//    SELECT a.*
-//    FROM absensi a
-//    JOIN users u ON a.user_id = u.id
-//    JOIN mentors m ON u.mentor_id = m.id
-//    WHERE m.id = p_mentor_id
-//      AND LOWER(u.username) LIKE LOWER(CONCAT('%', p_username, '%'));
-//END $$
-//
-//DELIMITER ;
-//""")
+
     List<Absensi> findByUser_Mentor_IdAndUser_UsernameContainingIgnoreCase(Integer mentorId,
                                                                            String username
                                                                            );
@@ -69,6 +52,24 @@ public interface AbsensiRepository extends JpaRepository<Absensi, Integer> {
             Integer mentorId
     );
 
+    //    @Query("""
+//        DELIMITER $$
+//
+//        CREATE PROCEDURE find_absensi_by_mentor_and_username (
+//            IN p_mentor_id INT,
+//            IN p_username VARCHAR(255)
+//        )
+//        BEGIN
+//            SELECT a.*
+//            FROM absensi a
+//            JOIN users u ON a.user_id = u.id
+//            JOIN mentors m ON u.mentor_id = m.id
+//            WHERE m.id = p_mentor_id
+//              AND LOWER(u.username) LIKE LOWER(CONCAT('%', p_username, '%'));
+//        END $$
+//
+//        DELIMITER ;
+//    """)
     @Query("""
         SELECT a FROM Absensi a
         WHERE a.user.mentor.id = :mentorId

@@ -19,10 +19,11 @@ import {
 import Badge from "../../components/ui/badge/Badge";
 import Button from "../../components/ui/button/Button";
 import { PencilIcon } from "../../icons";
+import { generatePagination } from "../../helpers/generatePagination";
 
 export default function Home() {
   const user = useUserStore((state) => state.user);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const imgRef = useRef(null);
   const detailRef = useRef(null);
@@ -60,6 +61,7 @@ export default function Home() {
   ];
   const { data: Absensis } = useAbsensiByIsPrivate(false, page, search);
   const [selectedAbsensi, setSelectedAbsensi] = useState(null);
+
   return (
     <>
       <PageMeta title="Dashboad - Absensi" description="" />
@@ -225,24 +227,28 @@ export default function Home() {
                 >
                   Prev
                 </button>
-                {Array.from(
-                  { length: (Absensis as any)?.totalPages },
-                  (_, i) => (
+                {generatePagination(
+                  page,
+                  (Absensis as any)?.totalPages || 0,
+                ).map((item, i) =>
+                  item === "..." ? (
+                    <span key={i} className="px-3 py-2">
+                      ...
+                    </span>
+                  ) : (
                     <button
                       key={i}
-                      onClick={() => setPage(i)}
-                      className={`px-3 py-2 rounded border
-              ${
-                page === i
-                  ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white text-black hover:bg-gray-100"
-              }`}
+                      onClick={() => setPage(item)}
+                      className={`px-3 py-2 rounded border ${
+                        page === item
+                          ? "bg-blue-500 text-white border-blue-500"
+                          : "bg-white text-black hover:bg-gray-100"
+                      }`}
                     >
-                      {i + 1}
+                      {item}
                     </button>
                   ),
                 )}
-
                 {/* Next */}
                 <button
                   onClick={() =>

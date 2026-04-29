@@ -74,8 +74,6 @@ public class ExcelServiceImpl implements ExcelService {
 
             int year = Integer.parseInt(parts[0]);
             int month = Integer.parseInt(parts[1]);
-            System.out.println("year"+year);
-            System.out.println("month"+month);
             LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
             LocalDateTime end = start.plusMonths(1).minusSeconds(1);
 

@@ -19,6 +19,7 @@ import Select from "../../components/form/Select";
 import Badge from "../../components/ui/badge/Badge";
 import TextArea from "../../components/form/input/TextArea";
 import { absensiTh, approvalOptions } from "../../helpers/data";
+import { generatePagination } from "../../helpers/generatePagination";
 
 export default function Absensis() {
   /**
@@ -347,20 +348,25 @@ export default function Absensis() {
                     >
                       Prev
                     </button>
-                    {Array.from(
-                      { length: (Absensis as any)?.totalPages },
-                      (_, i) => (
+                    {generatePagination(
+                      page,
+                      (Absensis as any)?.totalPages || 0,
+                    ).map((item, i) =>
+                      item === "..." ? (
+                        <span key={i} className="px-3 py-2">
+                          ...
+                        </span>
+                      ) : (
                         <button
                           key={i}
-                          onClick={() => setPage(i)}
-                          className={`px-3 py-2 rounded border
-              ${
-                page === i
-                  ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white text-black hover:bg-gray-100"
-              }`}
+                          onClick={() => setPage(item)}
+                          className={`px-3 py-2 rounded border ${
+                            page === item
+                              ? "bg-blue-500 text-white border-blue-500"
+                              : "bg-white text-black hover:bg-gray-100"
+                          }`}
                         >
-                          {i + 1}
+                          {item}
                         </button>
                       ),
                     )}

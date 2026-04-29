@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import Button from "../../components/ui/button/Button";
 import { PencilIcon } from "../../icons";
 import { absensiByUserTh } from "../../helpers/data";
+import { generatePagination } from "../../helpers/generatePagination";
 
 export default function AbsensiByUser() {
   /**
@@ -29,7 +30,7 @@ export default function AbsensiByUser() {
    * api
    */
   const { data: Absensis } = useAbsensiByUser(currentUser.id, page);
-  
+
   /**
    * ref
    */
@@ -212,24 +213,28 @@ export default function AbsensiByUser() {
                     >
                       Prev
                     </button>
-                    {Array.from(
-                      { length: (Absensis as any)?.totalPages },
-                      (_, i) => (
+                    {generatePagination(
+                      page,
+                      (Absensis as any)?.totalPages || 0,
+                    ).map((item, i) =>
+                      item === "..." ? (
+                        <span key={i} className="px-3 py-2">
+                          ...
+                        </span>
+                      ) : (
                         <button
                           key={i}
-                          onClick={() => setPage(i)}
-                          className={`px-3 py-2 rounded border
-              ${
-                page === i
-                  ? "bg-blue-500 text-white border-blue-500"
-                  : "bg-white text-black hover:bg-gray-100"
-              }`}
+                          onClick={() => setPage(item)}
+                          className={`px-3 py-2 rounded border ${
+                            page === item
+                              ? "bg-blue-500 text-white border-blue-500"
+                              : "bg-white text-black hover:bg-gray-100"
+                          }`}
                         >
-                          {i + 1}
+                          {item}
                         </button>
                       ),
                     )}
-
                     {/* Next */}
                     <button
                       onClick={() =>

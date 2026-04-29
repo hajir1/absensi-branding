@@ -17,7 +17,7 @@ export interface ElementData {
 }
 
 const BASE_URL = "http://localhost:8080/api/v1";
-const size = 10;
+const size = 1;
 
 export const api = axios.create({
   baseURL: BASE_URL,
