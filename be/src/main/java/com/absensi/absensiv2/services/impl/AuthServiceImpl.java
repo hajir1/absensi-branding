@@ -105,27 +105,27 @@ public class AuthServiceImpl implements AuthService {
                     "Email atau Password Salah"
             );
         }
-//        if(!user.getIsVerify()){
-//
-//            String token = UUID.randomUUID().toString();
-//            VerificationToken vt = new VerificationToken();
-//            vt.setUser(user);
-//            vt.setExpiryDate(LocalDateTime.now().plusHours(24));
-//
-//            tokenRepository.save(vt);
-//            emailService.sendVerificationEmail(user.getEmail(),token);
-//            vt.setToken(token);
-//
-//            return new TokenResponse("","","Verifikasi token dikirimkan");
-//        }else{
-//
-//            String accessToken = jwtService.generateAccessToken(user);
-//            String refreshToken = jwtService.generateRefreshToken(user);
-//            return new TokenResponse(accessToken, refreshToken,"");
-//        }
+        if(!user.getIsVerify()){
+
+            String token = UUID.randomUUID().toString();
+            VerificationToken vt = new VerificationToken();
+            vt.setUser(user);
+            vt.setExpiryDate(LocalDateTime.now().plusHours(24));
+
+            tokenRepository.save(vt);
+            emailService.sendVerificationEmail(user.getEmail(),token);
+            vt.setToken(token);
+
+            return new TokenResponse("","","Verifikasi token dikirimkan");
+        }else{
+
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
             return new TokenResponse(accessToken, refreshToken,"");
+        }
+//            String accessToken = jwtService.generateAccessToken(user);
+//            String refreshToken = jwtService.generateRefreshToken(user);
+//            return new TokenResponse(accessToken, refreshToken,"");
 
     }
     public Bucket resolveBucket(String ip) {

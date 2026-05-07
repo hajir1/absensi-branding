@@ -42,10 +42,10 @@ public class AbsensiServiceImpl implements AbsensiService {
          */
         Absensi absensi = new Absensi();
         User user = userRepository.findById(req.getUserId())
-                .orElseThrow(() -> new RuntimeException("Nama Pengguna Tidak Ditemukan"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nama Pengguna Tidak Ditemukan"));
 
         Shift shift = shiftRepository.findById(req.getShiftId())
-                .orElseThrow(() -> new RuntimeException("Shift Tidak Ditemukan"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Shift Tidak Ditemukan"));
 
         LocalDateTime waktuAbsensi = LocalDateTime.now();
         LocalTime jamAbsensi = waktuAbsensi.toLocalTime();
@@ -87,7 +87,7 @@ public class AbsensiServiceImpl implements AbsensiService {
 
             } catch (IOException e) {
                 e.printStackTrace(); // atau pakai logger
-                throw new RuntimeException("Upload gagal: " + e.getMessage());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Upload gagal: " + e.getMessage());
             }
         }
 
@@ -248,10 +248,10 @@ public class AbsensiServiceImpl implements AbsensiService {
             existingAbsensi.setJenis(Jenis.valueOf(req.getJenis()));
         }
         User user = userRepository.findById(req.getUserId())
-                .orElseThrow(() -> new RuntimeException("Nama Pengguna Tidak Ditemukan"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nama Pengguna Tidak Ditemukan"));
 
         Shift shift = shiftRepository.findById(req.getShiftId())
-                .orElseThrow(() -> new RuntimeException("Nama Hari Tidak Ditemukan"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nama Hari Tidak Ditemukan"));
 
         existingAbsensi.setShift(shift);
         existingAbsensi.setUser(user);
@@ -277,7 +277,7 @@ public class AbsensiServiceImpl implements AbsensiService {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new RuntimeException("Upload gagal: " + e.getMessage());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Upload gagal: " + e.getMessage());
             }
         }
 
@@ -308,7 +308,7 @@ public class AbsensiServiceImpl implements AbsensiService {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException(e.getMessage());
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
             }
         }
         absensiRepository.delete(existingAbsensi);

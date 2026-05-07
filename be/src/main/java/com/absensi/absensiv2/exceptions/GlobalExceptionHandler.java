@@ -83,11 +83,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ErrorResponse> handleResponseStatus(ResponseStatusException ex) {
 
+        HttpStatus status =
+                HttpStatus.valueOf(ex.getStatusCode().value());
         return ResponseEntity
-                .status(ex.getStatusCode())
+                .status(status)
                 .body(new ErrorResponse(
                         ex.getReason(),
-                        "BAD REQUEST",
+                        status.getReasonPhrase(),
                         HttpStatus.valueOf(ex.getStatusCode().value())
                 ));
     }
