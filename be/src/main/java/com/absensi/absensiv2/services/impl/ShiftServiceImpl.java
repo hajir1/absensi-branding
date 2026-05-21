@@ -29,10 +29,10 @@ public class ShiftServiceImpl implements ShiftService {
 
         Shift shift = new Shift();
         User user = userRepository.findById(req.getUserId())
-                .orElseThrow(() -> new RuntimeException("Nama Pengguna Tidak Ditemukan"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nama Pengguna Tidak Ditemukan"));
 
         Hari hari = hariRepository.findById(req.getHariId())
-                .orElseThrow(() -> new RuntimeException("Nama Hari Tidak Ditemukan"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nama Hari Tidak Ditemukan"));
 
         if(req.getToleransiMenit() == null){
             shift.setToleransiMenit(60);
@@ -71,10 +71,10 @@ public class ShiftServiceImpl implements ShiftService {
             existingShift.setAkhir(req.getAkhir());
         }
         User user = userRepository.findById(req.getUserId())
-                .orElseThrow(() -> new RuntimeException("Nama Pengguna Tidak Ditemukan"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nama Pengguna Tidak Ditemukan"));
 
         Hari hari = hariRepository.findById(req.getHariId())
-                .orElseThrow(() -> new RuntimeException("Nama Hari Tidak Ditemukan"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,"Nama Hari Tidak Ditemukan"));
 
         existingShift.setHari(hari);
         existingShift.setUser(user);
