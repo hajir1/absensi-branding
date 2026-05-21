@@ -1,25 +1,35 @@
-export const generatePagination = (current: number, total: number) => {
-  const pages = [];
+export const generatePagination = (
+  current: number,
+  total: number
+) => {
+  const pages: (number | string)[] = [];
 
-  if (total <= 10) {
-    for (let i = 1; i <= total; i++) pages.push(i);
-    return pages;
+  // kalau total sedikit
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i);
   }
 
-  pages.push(1);
+  pages.push(0);
 
-  if (current > 4) pages.push("...");
+  const start = Math.max(1, current - 1);
+  const end = Math.min(total - 2, current + 1);
 
-  let start = Math.max(2, current - 2);
-  let end = Math.min(total - 1, current + 2);
+  // titik kiri
+  if (start > 1) {
+    pages.push("...");
+  }
 
+  // halaman tengah
   for (let i = start; i <= end; i++) {
     pages.push(i);
   }
 
-  if (current < total - 3) pages.push("...");
+  // titik kanan
+  if (end < total - 2) {
+    pages.push("...");
+  }
 
-  pages.push(total);
+  pages.push(total - 1);
 
   return pages;
 };

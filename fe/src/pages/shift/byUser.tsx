@@ -53,12 +53,10 @@ export default function Shifts() {
   const { data: Shifts } = useShiftByUser(currentUser.id);
   const createAbsensi = useCreateAbsensi();
 
-
   /**
    * ref
    */
   const updateRef = useRef(null);
-
 
   /**
    * handler
@@ -174,33 +172,32 @@ export default function Shifts() {
                         {Shift.toleransiMenit} menit
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400 space-x-4">
-                        {canAbsen(Shift) ? (
-                          <Button
-                            onClick={() => {
-                              setDataAbsensi((prev) => ({
-                                ...prev,
-                                keterangan: "",
-                                status: "",
-                                shiftId: Shift.id,
-                                userId: currentUser.id,
-                              }));
-                              setErrorShift("");
-                              setFile(null);
-                              updateRef.current?.showModal();
-                              setDataAbsensi((prev) => ({
-                                ...prev,
-                                jenis: "",
-                              }));
-                            }}
-                            variant="warning"
-                            size="sm"
-                          >
-                            Absen <PencilIcon />{" "}
-                          </Button>
+                        <Button
+                          onClick={() => {
+                            setDataAbsensi((prev) => ({
+                              ...prev,
+                              keterangan: "",
+                              status: "",
+                              shiftId: Shift.id,
+                              userId: currentUser.id,
+                            }));
+                            setErrorShift("");
+                            setFile(null);
+                            updateRef.current?.showModal();
+                            setDataAbsensi((prev) => ({
+                              ...prev,
+                              jenis: "",
+                            }));
+                          }}
+                          variant="warning"
+                          size="sm"
+                        >
+                          Absen <PencilIcon />{" "}
+                        </Button>
+                        {/* {canAbsen(Shift) ? (
                         ) : (
                           <p>Absen Tidak Tersedia</p>
-                        )}
-
+                        )} */}
                         <dialog
                           ref={updateRef}
                           className="modal modal-bottom sm:modal-middle"

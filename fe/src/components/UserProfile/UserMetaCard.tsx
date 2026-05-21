@@ -102,8 +102,8 @@ export default function UserMetaCard() {
     }
   };
   useEffect(() => {
-    console.log(imgModal);
-  }, [imgModal]);
+    console.log(currentUser);
+  }, [currentUser]);
 
   return (
     <>

@@ -231,7 +231,7 @@ export default function AbsensiByUser() {
                               : "bg-white text-black hover:bg-gray-100"
                           }`}
                         >
-                          {item}
+                          {item + 1}
                         </button>
                       ),
                     )}

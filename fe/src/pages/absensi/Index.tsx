@@ -48,6 +48,7 @@ export default function Absensis() {
   const imgRef = useRef(null);
   const detailRef = useRef(null);
 
+
   return (
     <>
       <PageMeta title="Absensi - Absensi" description="" />
@@ -366,7 +367,7 @@ export default function Absensis() {
                               : "bg-white text-black hover:bg-gray-100"
                           }`}
                         >
-                          {item}
+                          {item + 1}
                         </button>
                       ),
                     )}
